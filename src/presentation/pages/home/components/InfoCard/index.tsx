@@ -4,7 +4,7 @@ import { Card, CardTitle, CardValue } from './styles';
 type Props = {
   item: {
     title: string;
-    value: number | string;
+    value: string;
   };
 };
 

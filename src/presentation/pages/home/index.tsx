@@ -10,10 +10,11 @@ import {
 } from './styles';
 import backgroundImage from './images/background.png';
 import InfoCard from './components/InfoCard';
+import { IWeatherModel } from 'domain/models/IWeather';
 
-const DATA_MOCK = {
+const DATA_MOCK: IWeatherModel = {
   city: 'Juiz de Fora',
-  temperature: 29,
+  temperature: '29º',
   weather: 'Nublado',
   data: [
     {
@@ -28,43 +29,38 @@ const DATA_MOCK = {
     },
     {
       key: 'temp_min',
-      title: 'Min',
-      value: 10,
+      title: 'Temperatura Mínima',
+      value: '10º',
     },
     {
       key: 'temp_max',
-      title: 'Max',
-      value: 32,
+      title: 'Temperatura Máxima',
+      value: '32º',
     },
     {
       key: 'feels_like',
-      title: 'Sensação',
-      value: 30,
+      title: 'Sensação térmica',
+      value: '30º',
     },
     {
       key: 'humidity',
       title: 'Umidade',
-      value: 100,
+      value: '69%',
     },
     {
       key: 'visibility',
       title: 'Visibilidade',
-      value: '16km',
+      value: '13km',
     },
     {
       key: 'pressure',
       title: 'Pressão',
-      value: 1023,
+      value: '1012 hPa',
     },
     {
       key: 'wind_speed',
       title: 'Veliocidade do vento',
-      value: 1.5,
-    },
-    {
-      key: 'pressure',
-      title: 'Pressão',
-      value: 1023,
+      value: '8 Km/h',
     },
   ],
 };
@@ -76,7 +72,7 @@ const Home: React.FC = () => {
     return (
       <HeaderContainer>
         <LocationTitle>{city}</LocationTitle>
-        <DegreeText>{temperature}º</DegreeText>
+        <DegreeText>{temperature}</DegreeText>
         <WeatherText>{weather}</WeatherText>
       </HeaderContainer>
     );
