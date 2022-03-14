@@ -8,11 +8,6 @@
     "allowJs": true,
     "jsx": "react-native",
     "baseUrl": "./src",
-    "paths": {
-      "~/*": [
-        "*"
-      ]
-    },
     "noEmit": true,
     "isolatedModules": true,
     "strict": true,
