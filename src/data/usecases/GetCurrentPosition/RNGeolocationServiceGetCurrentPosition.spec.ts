@@ -1,7 +1,12 @@
 import { RNGeolocationServiceGetCurrentPosition } from './RNGeolocationServiceGetCurrentPosition';
 import Geolocation from 'react-native-geolocation-service';
+import { IGetCurrentPosition } from '../../../domain/usecases/IGetCurrentPosition';
 
-const makeSut = () => {
+type SutTypes = {
+  sut: IGetCurrentPosition;
+};
+
+const makeSut = (): SutTypes => {
   const sut = new RNGeolocationServiceGetCurrentPosition();
   return { sut };
 };

@@ -1,7 +1,12 @@
 import { RNPermissionsRequestLocationPermission } from './RNPermissionsRequestLocationPermission';
 import RNPermission from 'react-native-permissions';
+import { IRequestLocationPermission } from '../../../domain/usecases/IRequestLocationPermission';
 
-const makeSut = () => {
+type SutTypes = {
+  sut: IRequestLocationPermission;
+};
+
+const makeSut = (): SutTypes => {
   const sut = new RNPermissionsRequestLocationPermission(
     RNPermission.PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
   );
