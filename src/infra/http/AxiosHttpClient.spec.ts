@@ -8,7 +8,7 @@ import { AxiosHttpClient } from './AxiosHttpClient';
 
 jest.mock('axios');
 
-export const mockHttpRequest = (): HttpRequest => ({
+const mockHttpRequest = (): HttpRequest => ({
   url: 'valid_url',
   method: HttpMethod.get,
   headers: {
@@ -24,12 +24,14 @@ export const mockHttpRequest = (): HttpRequest => ({
   },
 });
 
+const mockHttpResponse = (): any => ({
+  status: 200,
+  data: {},
+});
+
 const mockAxios = (): jest.Mocked<typeof axios> => {
   const mockedAxios = axios as jest.Mocked<typeof axios>;
-  mockedAxios.request.mockClear().mockResolvedValue({
-    status: 200,
-    data: {},
-  });
+  mockedAxios.request.mockClear().mockResolvedValue(mockHttpResponse());
   return mockedAxios;
 };
 
@@ -73,6 +75,23 @@ describe('AxiosHttpClient', () => {
     expect(httpResponse).toEqual({
       statusCode: axiosResponse.status,
       body: axiosResponse.data,
+    });
+  });
+
+  it('Should return correct error', async () => {
+    const { sut, mockedAxios } = makeSut();
+    const request = mockHttpRequest();
+    const response = mockHttpResponse();
+
+    mockedAxios.request.mockRejectedValueOnce({
+      response,
+    });
+
+    const promise = await sut.request(request);
+
+    expect(promise).toEqual({
+      statusCode: response.status,
+      body: response.data,
     });
   });
 });
