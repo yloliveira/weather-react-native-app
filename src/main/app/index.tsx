@@ -1,8 +1,8 @@
 import React from 'react';
-import Home from '../../presentation/pages/home';
+import { MakeHomePage } from '../factories/pages/home';
 
 const App = () => {
-  return <Home />;
+  return <MakeHomePage />;
 };
 
 export default App;

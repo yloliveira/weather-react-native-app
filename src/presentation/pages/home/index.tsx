@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   ImageBackgroundContainer,
   SafeAreaContainer,
@@ -10,7 +10,9 @@ import {
 } from './styles';
 import backgroundImage from './images/background.png';
 import InfoCard from './components/InfoCard';
-import { IWeatherModel } from 'domain/models/IWeather';
+import { IWeatherModel } from '../../../domain/models/IWeather';
+import { IRequestLocationPermission } from '../../../domain/usecases/IRequestLocationPermission';
+import { IGetCurrentPosition } from '../../../domain/usecases/IGetCurrentPosition';
 
 const DATA_MOCK: IWeatherModel = {
   city: 'Juiz de Fora',
@@ -65,7 +67,15 @@ const DATA_MOCK: IWeatherModel = {
   ],
 };
 
-const Home: React.FC = () => {
+type Props = {
+  requestLocationPermission: IRequestLocationPermission;
+  getCurrentPosition: IGetCurrentPosition;
+};
+
+const Home: React.FC<Props> = ({
+  requestLocationPermission,
+  getCurrentPosition,
+}) => {
   const { city, temperature, weather, data } = DATA_MOCK;
 
   const renderListHeaderComponent = useCallback(() => {
@@ -83,6 +93,20 @@ const Home: React.FC = () => {
   }, []);
 
   const keyExtractor = useCallback(item => item.key, []);
+
+  const loadWeatherData = useCallback(async () => {
+    try {
+      await requestLocationPermission.execute();
+      const coordinates = await getCurrentPosition.execute();
+      console.log(coordinates);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [getCurrentPosition, requestLocationPermission]);
+
+  useEffect(() => {
+    loadWeatherData();
+  }, [loadWeatherData]);
 
   return (
     <ImageBackgroundContainer source={backgroundImage}>
