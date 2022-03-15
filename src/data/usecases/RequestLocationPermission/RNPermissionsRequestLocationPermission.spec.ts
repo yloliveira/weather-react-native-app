@@ -18,4 +18,16 @@ describe('RNPermissionsRequestLocationPermissionUseCase', () => {
     expect(rnPermissionSpy).toBeCalled();
     expect(permission).toBe(true);
   });
+
+  it("Should return false if RNPermissions.request doesn't return granted", async () => {
+    const { sut } = makeSut();
+    const rnPermissionSpy = jest
+      .spyOn(RNPermission, 'request')
+      .mockResolvedValueOnce('denied');
+
+    const permission = await sut.execute();
+
+    expect(rnPermissionSpy).toBeCalled();
+    expect(permission).toBe(false);
+  });
 });
