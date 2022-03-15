@@ -8,12 +8,26 @@ const makeSut = () => {
   return { sut };
 };
 
-describe('RemoteListMarketplaceItems', () => {
+describe('RNPermissionsChechtLocationPermissionUseCase', () => {
   it('Should return true if RNPermissions.check returns granted', async () => {
     const { sut } = makeSut();
     const rnPermissionSpy = jest.spyOn(RNPermission, 'check');
+
     const permission = await sut.execute();
+
     expect(rnPermissionSpy).toBeCalled();
     expect(permission).toBe(true);
+  });
+
+  it("Should return false if RNPermissions.check doesn't return granted", async () => {
+    const { sut } = makeSut();
+    const rnPermissionSpy = jest
+      .spyOn(RNPermission, 'check')
+      .mockResolvedValueOnce('denied');
+
+    const permission = await sut.execute();
+
+    expect(rnPermissionSpy).toBeCalled();
+    expect(permission).toBe(false);
   });
 });
