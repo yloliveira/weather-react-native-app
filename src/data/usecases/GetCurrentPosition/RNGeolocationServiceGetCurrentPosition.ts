@@ -8,14 +8,16 @@ export class RNGeolocationServiceGetCurrentPosition
   implements IGetCurrentPosition
 {
   async execute(): Promise<Coordinates> {
-    const position = (await new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) =>
       Geolocation.getCurrentPosition(
-        coords => resolve(coords),
-        error => reject(error),
+        position => {
+          const { latitude, longitude } = position.coords;
+          resolve({ latitude, longitude });
+        },
+        () => {
+          reject(new Error('Unable to get current position'));
+        },
       ),
-    )) as Geolocation.GeoPosition;
-
-    const { latitude, longitude } = position.coords;
-    return { latitude, longitude };
+    );
   }
 }
