@@ -1,5 +1,9 @@
 export enum HttpMethod {
   get = 'get',
+  post = 'post',
+  put = 'put',
+  patch = 'patch',
+  delete = 'delete',
 }
 
 export enum HttpStatusCode {
@@ -13,6 +17,7 @@ export enum HttpStatusCode {
 export type HttpRequest = {
   url: string;
   method: HttpMethod;
+  body?: any;
   headers?: any;
   params?: any;
 };

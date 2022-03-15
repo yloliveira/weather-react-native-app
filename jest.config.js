@@ -1,6 +1,9 @@
 module.exports = {
   roots: ['<rootDir>/src'],
-  collectCoverageFrom: ['<rootDir>/src/data/usecases/**/*.{ts,tsx}'],
+  collectCoverageFrom: [
+    '<rootDir>/src/data/usecases/**/*.{ts,tsx}',
+    '<rootDir>/src/infra/**/*.{ts,tsx}',
+  ],
   coverageDirectory: 'coverage',
   testMatch: ['**/*.spec.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
