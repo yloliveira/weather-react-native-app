@@ -12,20 +12,17 @@ type SutTypes = {
   httpClientMock: MockHttpClient<IGetCurrentWeatherData.Model>;
 };
 
-const makeSut = (url: string): SutTypes => {
+const makeSut = (url: string, apiKey: string): SutTypes => {
   const httpClientMock = new MockHttpClient<IGetCurrentWeatherData.Model>();
-  const sut = new RemoteGetCurrentWeatherData(
-    url,
-    'valid_api_key',
-    httpClientMock,
-  );
+  const sut = new RemoteGetCurrentWeatherData(url, apiKey, httpClientMock);
   return { sut, httpClientMock };
 };
 
 describe('RemoteGetCurrentWeatherDataUseCase', () => {
   it('Should call HttpClient with correct values', async () => {
     const url = 'valid_url';
-    const { sut, httpClientMock } = makeSut(url);
+    const apiKey = 'valid_api_key';
+    const { sut, httpClientMock } = makeSut(url, apiKey);
 
     const params = {
       latitude: -21.757793,
@@ -36,12 +33,19 @@ describe('RemoteGetCurrentWeatherDataUseCase', () => {
 
     expect(httpClientMock.url).toBe(url);
     expect(httpClientMock.method).toBe(HttpMethod.get);
-    expect(httpClientMock.params).toEqual(params);
+    expect(httpClientMock.params).toEqual({
+      lat: params.latitude,
+      lon: params.longitude,
+      appid: apiKey,
+      units: 'metric',
+      lang: 'pt_br',
+    });
   });
 
   test('Should throw UnexpectedError if HttpClient returns error', async () => {
     const url = 'valid_url';
-    const { sut, httpClientMock } = makeSut(url);
+    const apiKey = 'valid_api_key';
+    const { sut, httpClientMock } = makeSut(url, apiKey);
     const params = {
       latitude: -21.757793,
       longitude: -43.35372,
