@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { PERMISSIONS } from 'react-native-permissions';
-import config from '../../../../config';
+import config from '../../../config';
 import Home from '../../../../presentation/pages/home';
 import { RNPermissionsRequestLocationPermission } from '../../../../data/usecases/RequestLocationPermission/RNPermissionsRequestLocationPermission';
 import { RNGeolocationServiceGetCurrentPosition } from '../../../../data/usecases/GetCurrentPosition/RNGeolocationServiceGetCurrentPosition';
