@@ -7,9 +7,7 @@ export class RemoteGetCurrentWeatherDataResponseAdapter
     private readonly remoteGetCurrentWeatherData: IGetCurrentWeatherData,
   ) {}
 
-  async execute(
-    data: IGetCurrentWeatherData.Params,
-  ): Promise<IGetCurrentWeatherData.Model | undefined> {
+  async execute(data: IGetCurrentWeatherData.Params): Promise<any> {
     const response = await this.remoteGetCurrentWeatherData.execute(data);
     if (response) {
       return {
