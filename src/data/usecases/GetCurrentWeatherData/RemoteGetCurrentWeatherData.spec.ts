@@ -14,7 +14,11 @@ type SutTypes = {
 
 const makeSut = (url: string): SutTypes => {
   const httpClientMock = new MockHttpClient<IGetCurrentWeatherData.Model>();
-  const sut = new RemoteGetCurrentWeatherData(url, httpClientMock);
+  const sut = new RemoteGetCurrentWeatherData(
+    url,
+    'valid_api_key',
+    httpClientMock,
+  );
   return { sut, httpClientMock };
 };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ImageBackgroundContainer,
   SafeAreaContainer,
@@ -13,80 +13,32 @@ import InfoCard from './components/InfoCard';
 import { IWeatherModel } from '../../../domain/models/IWeather';
 import { IRequestLocationPermission } from '../../../domain/usecases/IRequestLocationPermission';
 import { IGetCurrentPosition } from '../../../domain/usecases/IGetCurrentPosition';
-
-const DATA_MOCK: IWeatherModel = {
-  city: 'Juiz de Fora',
-  temperature: '29º',
-  weather: 'Nublado',
-  data: [
-    {
-      key: 'sunrise',
-      title: 'Nascer do sol',
-      value: '05:55',
-    },
-    {
-      key: 'sunset',
-      title: 'Pôr do sol',
-      value: '18:55',
-    },
-    {
-      key: 'temp_min',
-      title: 'Temperatura Mínima',
-      value: '10º',
-    },
-    {
-      key: 'temp_max',
-      title: 'Temperatura Máxima',
-      value: '32º',
-    },
-    {
-      key: 'feels_like',
-      title: 'Sensação térmica',
-      value: '30º',
-    },
-    {
-      key: 'humidity',
-      title: 'Umidade',
-      value: '69%',
-    },
-    {
-      key: 'visibility',
-      title: 'Visibilidade',
-      value: '13km',
-    },
-    {
-      key: 'pressure',
-      title: 'Pressão',
-      value: '1012 hPa',
-    },
-    {
-      key: 'wind_speed',
-      title: 'Veliocidade do vento',
-      value: '8 Km/h',
-    },
-  ],
-};
+import { IGetCurrentWeatherData } from 'domain/usecases/IGetCurrentWeatherData';
 
 type Props = {
   requestLocationPermission: IRequestLocationPermission;
   getCurrentPosition: IGetCurrentPosition;
+  getCurrentWeatherData: IGetCurrentWeatherData;
 };
 
 const Home: React.FC<Props> = ({
   requestLocationPermission,
   getCurrentPosition,
+  getCurrentWeatherData,
 }) => {
-  const { city, temperature, weather, data } = DATA_MOCK;
+  const [weatherData, setWeatherData] = useState<IWeatherModel | undefined>(
+    undefined,
+  );
 
   const renderListHeaderComponent = useCallback(() => {
     return (
       <HeaderContainer>
-        <LocationTitle>{city}</LocationTitle>
-        <DegreeText>{temperature}</DegreeText>
-        <WeatherText>{weather}</WeatherText>
+        <LocationTitle>{weatherData?.city}</LocationTitle>
+        <DegreeText>{weatherData?.temperature}</DegreeText>
+        <WeatherText>{weatherData?.weather}</WeatherText>
       </HeaderContainer>
     );
-  }, [city, temperature, weather]);
+  }, [weatherData]);
 
   const renderItem = useCallback(({ item }) => {
     return <InfoCard item={item} />;
@@ -98,11 +50,17 @@ const Home: React.FC<Props> = ({
     try {
       await requestLocationPermission.execute();
       const coordinates = await getCurrentPosition.execute();
-      console.log(coordinates);
+      const response = await getCurrentWeatherData.execute(coordinates);
+
+      if (!response?.result) {
+        throw new Error();
+      }
+
+      setWeatherData(response.result);
     } catch (error) {
       console.log(error);
     }
-  }, [getCurrentPosition, requestLocationPermission]);
+  }, [getCurrentPosition, getCurrentWeatherData, requestLocationPermission]);
 
   useEffect(() => {
     loadWeatherData();
@@ -112,7 +70,7 @@ const Home: React.FC<Props> = ({
     <ImageBackgroundContainer source={backgroundImage}>
       <SafeAreaContainer>
         <ScrollContent
-          data={data}
+          data={weatherData?.data}
           keyExtractor={keyExtractor}
           numColumns={3}
           ListHeaderComponent={renderListHeaderComponent}
