@@ -7,6 +7,8 @@ Este projeto foi construído utilizando TypeScript e React Native, seguindo boas
 
 ![Ios screen captures](readmeImages/iosScreen.png)
 
+![Android screen captures](readmeImages/androidScreen.png)
+
 ### 2. Executando o projeto
 
 #### 2.1. Instalar dependências
