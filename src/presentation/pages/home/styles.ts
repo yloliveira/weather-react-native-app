@@ -25,6 +25,7 @@ export const LoadingContainer = styled.View<LoadingContainerProps>`
   height: ${Dimensions.get('window').height}px;
   justify-content: center;
   position: absolute;
+  z-index: 1;
 `;
 
 export const ScrollContent = styled.FlatList.attrs(() => ({
@@ -33,9 +34,23 @@ export const ScrollContent = styled.FlatList.attrs(() => ({
   },
 }))``;
 
+export const RefreshButtonContainer = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 40px;
+  width: 100px;
+  height: 40px;
+  border-radius: 30px;
+  background-color: 'rgba(62, 130, 209, 0.8)';
+`;
+
+export const RefreshText = styled(DefaultText)`
+  font-size: 18px;
+`;
+
 export const HeaderContainer = styled.View`
   align-items: center;
-  margin: 40px 0;
+  margin-bottom: 40px;
 `;
 
 export const LocationTitle = styled(DefaultText)`

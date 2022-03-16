@@ -5,6 +5,8 @@ import {
   LoadingContainer,
   ScrollContent,
   HeaderContainer,
+  RefreshButtonContainer,
+  RefreshText,
   LocationTitle,
   DegreeText,
   WeatherText,
@@ -33,20 +35,6 @@ const Home: React.FC<Props> = ({
   );
   const [loading, setLoading] = useState<boolean>(true);
 
-  const renderListHeaderComponent = useCallback(() => {
-    return (
-      <HeaderContainer>
-        <LocationTitle>{weatherData?.city}</LocationTitle>
-        <DegreeText>{weatherData?.temperature}</DegreeText>
-        <WeatherText>{weatherData?.weather}</WeatherText>
-      </HeaderContainer>
-    );
-  }, [weatherData]);
-
-  const renderItem = useCallback(({ item }) => {
-    return <InfoCard item={item} />;
-  }, []);
-
   const keyExtractor = useCallback(item => item.key, []);
 
   const loadWeatherData = useCallback(async () => {
@@ -68,9 +56,36 @@ const Home: React.FC<Props> = ({
     }
   }, [getCurrentPosition, getCurrentWeatherData, requestLocationPermission]);
 
-  useEffect(() => {
+  const handleRefresh = useCallback(() => {
     loadWeatherData();
   }, [loadWeatherData]);
+
+  useEffect(() => {
+    loadWeatherData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const renderListHeaderComponent = useCallback(() => {
+    return (
+      <HeaderContainer>
+        <RefreshButtonContainer onPress={handleRefresh}>
+          <RefreshText>Atualizar</RefreshText>
+        </RefreshButtonContainer>
+        <LocationTitle>{weatherData?.city}</LocationTitle>
+        <DegreeText>{weatherData?.temperature}</DegreeText>
+        <WeatherText>{weatherData?.weather}</WeatherText>
+      </HeaderContainer>
+    );
+  }, [
+    handleRefresh,
+    weatherData?.city,
+    weatherData?.temperature,
+    weatherData?.weather,
+  ]);
+
+  const renderItem = useCallback(({ item }) => {
+    return <InfoCard item={item} />;
+  }, []);
 
   return (
     <ImageBackgroundContainer source={backgroundImage}>
