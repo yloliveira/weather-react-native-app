@@ -1,9 +1,7 @@
 import { IWeatherModel } from '../models/IWeather';
 
 export interface IGetCurrentWeatherData {
-  execute: (
-    params: IGetCurrentWeatherData.Params,
-  ) => Promise<IGetCurrentWeatherData.Model | undefined>;
+  execute: (params: IGetCurrentWeatherData.Params) => Promise<any>;
 }
 
 export namespace IGetCurrentWeatherData {

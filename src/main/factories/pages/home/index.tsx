@@ -7,6 +7,7 @@ import { RNPermissionsRequestLocationPermission } from '../../../../data/usecase
 import { RNGeolocationServiceGetCurrentPosition } from '../../../../data/usecases/GetCurrentPosition/RNGeolocationServiceGetCurrentPosition';
 import { AxiosHttpClient } from '../../../../infra/http/AxiosHttpClient';
 import { RemoteGetCurrentWeatherData } from '../../../../data/usecases/GetCurrentWeatherData/RemoteGetCurrentWeatherData';
+import { RemoteGetCurrentWeatherDataResponseAdapter } from '../../../adapters/RemoteGetCurrentWeatherDataResponse';
 
 const permission = Platform.select({
   ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
@@ -28,12 +29,15 @@ const remoteGetCurrentWeatherData = new RemoteGetCurrentWeatherData(
   axiosHttpClient,
 );
 
+const remoteGetCurrentFormattedData =
+  new RemoteGetCurrentWeatherDataResponseAdapter(remoteGetCurrentWeatherData);
+
 export const MakeHomePage: React.FC = () => {
   return (
     <Home
       requestLocationPermission={rnPermissionRequestLocationPermission}
       getCurrentPosition={rnGeolocationServiceGetCurrentPosition}
-      getCurrentWeatherData={remoteGetCurrentWeatherData}
+      getCurrentWeatherData={remoteGetCurrentFormattedData}
     />
   );
 };
