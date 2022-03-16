@@ -3,6 +3,7 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/data/usecases/**/*.{ts,tsx}',
     '<rootDir>/src/infra/**/*.{ts,tsx}',
+    '<rootDir>/src/main/adapters/**/*.{ts,tsx}',
   ],
   coverageDirectory: 'coverage',
   testMatch: ['**/*.spec.ts'],
