@@ -8,15 +8,16 @@ type SutTypes = {
   httpClientMock: MockHttpClient<IGetCurrentWeatherData.Model>;
 };
 
-const makeSut = (): SutTypes => {
+const makeSut = (url: string): SutTypes => {
   const httpClientMock = new MockHttpClient<IGetCurrentWeatherData.Model>();
-  const sut = new RemoteGetCurrentWeatherData('valid_url', httpClientMock);
+  const sut = new RemoteGetCurrentWeatherData(url, httpClientMock);
   return { sut, httpClientMock };
 };
 
 describe('RemoteGetCurrentWeatherDataUseCase', () => {
   it('Should call HttpClient with correct values', async () => {
-    const { sut, httpClientMock } = makeSut();
+    const url = 'valid_url';
+    const { sut, httpClientMock } = makeSut(url);
 
     const params = {
       latitude: -21.757793,
@@ -25,7 +26,7 @@ describe('RemoteGetCurrentWeatherDataUseCase', () => {
 
     await sut.execute(params);
 
-    expect(httpClientMock.url).toBe('valid_url');
+    expect(httpClientMock.url).toBe(url);
     expect(httpClientMock.method).toBe(HttpMethod.get);
     expect(httpClientMock.params).toEqual(params);
   });
