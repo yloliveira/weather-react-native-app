@@ -1,3 +1,4 @@
+import { UnexpectedError } from '../../domain/errors/UnexpectedError';
 import { IGetCurrentWeatherData } from '../../domain/usecases/IGetCurrentWeatherData';
 import { RemoteGetCurrentWeatherDataResponseAdapter } from './RemoteGetCurrentWeatherDataResponse';
 
@@ -25,7 +26,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('RemoteGetCurrentWeatherDataResponseAdapter', () => {
-  it('Should call getCurrentWeatherDataUseCase with correct values', async () => {
+  it('Should call remoteGetCurrentWeatherDataUseCase with correct values', async () => {
     const { sut, getCurrentWeatherDataMock } = makeSut();
     const getCurrentWeatherDataMockSpy = jest.spyOn(
       getCurrentWeatherDataMock,
@@ -40,5 +41,21 @@ describe('RemoteGetCurrentWeatherDataResponseAdapter', () => {
     await sut.execute(params);
 
     expect(getCurrentWeatherDataMockSpy).toBeCalledWith(params);
+  });
+
+  it('Should return same remoteGetCurrentWeatherDataUseCase response if its throws an error', async () => {
+    const { sut, getCurrentWeatherDataMock } = makeSut();
+    jest
+      .spyOn(getCurrentWeatherDataMock, 'execute')
+      .mockRejectedValueOnce(new UnexpectedError());
+
+    const params = {
+      latitude: -21.757793,
+      longitude: -43.35372,
+    };
+
+    const promise = sut.execute(params);
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
