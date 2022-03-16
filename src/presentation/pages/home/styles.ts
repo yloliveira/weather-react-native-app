@@ -5,6 +5,10 @@ type LoadingContainerProps = {
   enable: boolean;
 };
 
+type ErrorContainerProps = {
+  disable: boolean;
+};
+
 const DefaultText = styled.Text`
   color: #fff;
 `;
@@ -46,6 +50,18 @@ export const RefreshButtonContainer = styled.TouchableOpacity`
 
 export const RefreshText = styled(DefaultText)`
   font-size: 18px;
+`;
+
+export const ErrorContainer = styled.View<ErrorContainerProps>`
+  display: ${props => (props.disable ? 'none' : 'flex')};
+  align-items: center;
+`;
+
+export const ErrorText = styled(DefaultText)`
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  line-height: 34px;
 `;
 
 export const HeaderContainer = styled.View`

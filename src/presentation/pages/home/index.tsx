@@ -4,6 +4,8 @@ import {
   SafeAreaContainer,
   LoadingContainer,
   ScrollContent,
+  ErrorContainer,
+  ErrorText,
   HeaderContainer,
   RefreshButtonContainer,
   RefreshText,
@@ -50,7 +52,12 @@ const Home: React.FC<Props> = ({
 
       setWeatherData(response.result);
     } catch (error) {
-      console.log(error);
+      setWeatherData(prevState => {
+        if (!prevState) {
+          return undefined;
+        }
+        return prevState;
+      });
     } finally {
       setLoading(false);
     }
@@ -83,6 +90,17 @@ const Home: React.FC<Props> = ({
     weatherData?.weather,
   ]);
 
+  const renderEmptyComponent = useCallback(() => {
+    return (
+      <ErrorContainer disable={loading}>
+        <ErrorText>
+          Não foi possível obter os dados dessa vez.{'\n'}
+          Verifique sua conexão e tente novamente.
+        </ErrorText>
+      </ErrorContainer>
+    );
+  }, [loading]);
+
   const renderItem = useCallback(({ item }) => {
     return <InfoCard item={item} />;
   }, []);
@@ -98,6 +116,7 @@ const Home: React.FC<Props> = ({
           keyExtractor={keyExtractor}
           numColumns={3}
           ListHeaderComponent={renderListHeaderComponent}
+          ListEmptyComponent={renderEmptyComponent}
           renderItem={renderItem}
         />
       </SafeAreaContainer>
