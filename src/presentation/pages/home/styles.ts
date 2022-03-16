@@ -1,4 +1,9 @@
+import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
+
+type LoadingContainerProps = {
+  enable: boolean;
+};
 
 const DefaultText = styled.Text`
   color: #fff;
@@ -11,6 +16,15 @@ export const ImageBackgroundContainer = styled.ImageBackground`
 export const SafeAreaContainer = styled.SafeAreaView`
   background-color: 'rgba(0, 0, 0, 0.2)';
   flex: 1;
+`;
+
+export const LoadingContainer = styled.View<LoadingContainerProps>`
+  align-items: center;
+  display: ${props => (props.enable ? 'flex' : 'none')};
+  width: ${Dimensions.get('window').width}px;
+  height: ${Dimensions.get('window').height}px;
+  justify-content: center;
+  position: absolute;
 `;
 
 export const ScrollContent = styled.FlatList.attrs(() => ({

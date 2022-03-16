@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   ImageBackgroundContainer,
   SafeAreaContainer,
+  LoadingContainer,
   ScrollContent,
   HeaderContainer,
   LocationTitle,
@@ -14,6 +15,7 @@ import { IWeatherModel } from '../../../domain/models/IWeather';
 import { IRequestLocationPermission } from '../../../domain/usecases/IRequestLocationPermission';
 import { IGetCurrentPosition } from '../../../domain/usecases/IGetCurrentPosition';
 import { IGetCurrentWeatherData } from 'domain/usecases/IGetCurrentWeatherData';
+import { ActivityIndicator } from 'react-native';
 
 type Props = {
   requestLocationPermission: IRequestLocationPermission;
@@ -29,6 +31,7 @@ const Home: React.FC<Props> = ({
   const [weatherData, setWeatherData] = useState<IWeatherModel | undefined>(
     undefined,
   );
+  const [loading, setLoading] = useState<boolean>(true);
 
   const renderListHeaderComponent = useCallback(() => {
     return (
@@ -48,6 +51,7 @@ const Home: React.FC<Props> = ({
 
   const loadWeatherData = useCallback(async () => {
     try {
+      setLoading(true);
       await requestLocationPermission.execute();
       const coordinates = await getCurrentPosition.execute();
       const response = await getCurrentWeatherData.execute(coordinates);
@@ -59,6 +63,8 @@ const Home: React.FC<Props> = ({
       setWeatherData(response.result);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, [getCurrentPosition, getCurrentWeatherData, requestLocationPermission]);
 
@@ -69,6 +75,9 @@ const Home: React.FC<Props> = ({
   return (
     <ImageBackgroundContainer source={backgroundImage}>
       <SafeAreaContainer>
+        <LoadingContainer enable={loading}>
+          <ActivityIndicator size="large" color="#000" />
+        </LoadingContainer>
         <ScrollContent
           data={weatherData?.data}
           keyExtractor={keyExtractor}
