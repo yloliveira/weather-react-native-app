@@ -27,8 +27,8 @@ export class RemoteGetCurrentWeatherDataResponseAdapter
     const feelsLike = `${data.main.feels_like.toFixed(0)}º`;
     const humidity = `${data.main.humidity}%`;
     const visibility = `${data.visibility / 1000}km`;
-    const pressure = `${data.main.pressure}\n hPa`;
-    const windSpeed = `${data.wind.speed.toFixed(1)}\n km/h`;
+    const pressure = `${data.main.pressure} hPa`;
+    const windSpeed = `${data.wind.speed.toFixed(1)} km/h`;
 
     const sunriseDate = new Date(data.sys.sunrise * 1000);
     const sunrise = `${sunriseDate
@@ -95,7 +95,7 @@ export class RemoteGetCurrentWeatherDataResponseAdapter
         },
         {
           key: 'wind_speed',
-          title: 'Veliocidade do vento',
+          title: 'Velocidade do Vento',
           value: windSpeed,
         },
       ],

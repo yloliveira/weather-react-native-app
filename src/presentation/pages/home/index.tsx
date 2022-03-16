@@ -114,7 +114,7 @@ const Home: React.FC<Props> = ({
         <ScrollContent
           data={weatherData?.data}
           keyExtractor={keyExtractor}
-          numColumns={3}
+          numColumns={2}
           ListHeaderComponent={renderListHeaderComponent}
           ListEmptyComponent={renderEmptyComponent}
           renderItem={renderItem}

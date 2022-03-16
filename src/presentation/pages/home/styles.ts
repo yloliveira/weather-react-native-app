@@ -36,6 +36,11 @@ export const ScrollContent = styled.FlatList.attrs(() => ({
   contentContainerStyle: {
     padding: 10,
   },
+  columnWrapperStyle: {
+    flex: 1,
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
 }))``;
 
 export const RefreshButtonContainer = styled.TouchableOpacity`
