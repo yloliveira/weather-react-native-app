@@ -26,7 +26,6 @@ $ yarn install
 | Variável | Descrição | Tipo |
 |--|--|--|
 | ENV | Ambiente que o projeto está sendo executado | `dev` ou `production` |
-| OPEN_WEATHER_API_URL | URL da API do Open Weather | string |
 | OPEN_WEATHER_API_KEY | chave da API do Open Weather | string |
 
 
