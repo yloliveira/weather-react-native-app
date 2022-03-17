@@ -1,13 +1,19 @@
+import { IWeatherModel } from 'domain/models/IWeather';
+import { OpenWeatherApiResponse } from '../../data/usecases/GetCurrentWeatherData/RemoteGetCurrentWeatherData';
 import { IGetCurrentWeatherData } from '../../domain/usecases/IGetCurrentWeatherData';
 
+type AdapterResponse = {
+  result: IWeatherModel;
+};
+
 export class RemoteGetCurrentWeatherDataResponseAdapter
-  implements IGetCurrentWeatherData
+  implements IGetCurrentWeatherData<AdapterResponse>
 {
   constructor(
     private readonly remoteGetCurrentWeatherData: IGetCurrentWeatherData,
   ) {}
 
-  async execute(data: IGetCurrentWeatherData.Params): Promise<any> {
+  async execute(data: IGetCurrentWeatherData.Params): Promise<AdapterResponse> {
     const response = await this.remoteGetCurrentWeatherData.execute(data);
     if (response) {
       return {
@@ -18,7 +24,7 @@ export class RemoteGetCurrentWeatherDataResponseAdapter
     return response;
   }
 
-  private buildResponseResult(data: any) {
+  private buildResponseResult(data: OpenWeatherApiResponse): IWeatherModel {
     const city = data.name;
     const temperature = `${data.main.temp.toFixed(0)}º`;
     const weather = data.weather[0].description;

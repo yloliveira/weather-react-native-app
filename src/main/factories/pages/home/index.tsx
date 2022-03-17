@@ -24,7 +24,6 @@ const rnGeolocationServiceGetCurrentPosition =
 const axiosHttpClient = new AxiosHttpClient();
 
 const remoteGetCurrentWeatherData = new RemoteGetCurrentWeatherData(
-  `${config.env.OPEN_WEATHER_API_URL}weather`,
   config.env.OPEN_WEATHER_API_KEY,
   axiosHttpClient,
 );

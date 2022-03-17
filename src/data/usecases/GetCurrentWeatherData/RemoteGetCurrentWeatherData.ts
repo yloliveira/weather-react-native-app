@@ -6,16 +6,42 @@ import {
 } from '../../../data/protocols/http/IHttpClient';
 import { IGetCurrentWeatherData } from '../../../domain/usecases/IGetCurrentWeatherData';
 
-export class RemoteGetCurrentWeatherData implements IGetCurrentWeatherData {
+export type OpenWeatherApiResponse = {
+  weather: {
+    description: string;
+  }[];
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+  };
+  visibility: number;
+  wind: {
+    speed: number;
+  };
+  sys: {
+    sunrise: number;
+    sunset: number;
+  };
+  name: string;
+};
+
+export class RemoteGetCurrentWeatherData
+  implements IGetCurrentWeatherData<OpenWeatherApiResponse>
+{
   constructor(
-    private readonly url: string,
     private readonly apiKey: string,
     private readonly httpClient: IHttpClient,
   ) {}
 
-  async execute(params: IGetCurrentWeatherData.Params): Promise<any> {
+  async execute(
+    params: IGetCurrentWeatherData.Params,
+  ): Promise<OpenWeatherApiResponse> {
     const response = await this.httpClient.request({
-      url: this.url,
+      url: 'https://api.openweathermap.org/data/2.5/weather',
       method: HttpMethod.get,
       params: {
         lat: params.latitude,
