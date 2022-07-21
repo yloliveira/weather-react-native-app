@@ -17,4 +17,4 @@ const InfoCard: React.FC<Props> = ({ item }) => {
   );
 };
 
-export default InfoCard;
+export default React.memo(InfoCard);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ImageBackgroundContainer,
   SafeAreaContainer,
@@ -37,9 +37,7 @@ const Home: React.FC<Props> = ({
   );
   const [loading, setLoading] = useState<boolean>(true);
 
-  const keyExtractor = useCallback(item => item.key, []);
-
-  const loadWeatherData = useCallback(async () => {
+  const loadWeatherData = async () => {
     try {
       setLoading(true);
       await requestLocationPermission.execute();
@@ -61,49 +59,40 @@ const Home: React.FC<Props> = ({
     } finally {
       setLoading(false);
     }
-  }, [getCurrentPosition, getCurrentWeatherData, requestLocationPermission]);
+  };
 
-  const handleRefresh = useCallback(() => {
+  const handleRefresh = () => {
     loadWeatherData();
-  }, [loadWeatherData]);
+  };
 
   useEffect(() => {
     loadWeatherData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderListHeaderComponent = useCallback(() => {
-    return (
-      <HeaderContainer>
-        <RefreshButtonContainer onPress={handleRefresh}>
-          <RefreshText>Atualizar</RefreshText>
-        </RefreshButtonContainer>
-        <LocationTitle>{weatherData?.city}</LocationTitle>
-        <DegreeText>{weatherData?.temperature}</DegreeText>
-        <WeatherText>{weatherData?.weather}</WeatherText>
-      </HeaderContainer>
-    );
-  }, [
-    handleRefresh,
-    weatherData?.city,
-    weatherData?.temperature,
-    weatherData?.weather,
-  ]);
+  const renderListHeaderComponent = () => (
+    <HeaderContainer>
+      <RefreshButtonContainer onPress={handleRefresh}>
+        <RefreshText>Atualizar</RefreshText>
+      </RefreshButtonContainer>
+      <LocationTitle>{weatherData?.city}</LocationTitle>
+      <DegreeText>{weatherData?.temperature}</DegreeText>
+      <WeatherText>{weatherData?.weather}</WeatherText>
+    </HeaderContainer>
+  );
 
-  const renderEmptyComponent = useCallback(() => {
-    return (
-      <ErrorContainer disable={loading}>
-        <ErrorText>
-          Não foi possível obter os dados dessa vez.{'\n'}
-          Verifique sua conexão e tente novamente.
-        </ErrorText>
-      </ErrorContainer>
-    );
-  }, [loading]);
+  const renderEmptyComponent = () => (
+    <ErrorContainer disable={loading}>
+      <ErrorText>
+        Não foi possível obter os dados dessa vez.{'\n'}
+        Verifique sua conexão e tente novamente.
+      </ErrorText>
+    </ErrorContainer>
+  );
 
-  const renderItem = useCallback(({ item }) => {
-    return <InfoCard item={item} />;
-  }, []);
+  const renderItem = ({ item }: any) => <InfoCard item={item} />;
+
+  const keyExtractor = (item: any) => item.key;
 
   return (
     <ImageBackgroundContainer source={backgroundImage}>
