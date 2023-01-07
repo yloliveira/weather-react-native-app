@@ -1,17 +1,13 @@
-import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
 
 type LoadingContainerProps = {
   enable: boolean;
 };
 
-type ErrorContainerProps = {
-  disable: boolean;
-};
-
-const DefaultText = styled.Text`
-  color: #fff;
-`;
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const CARD_WIDTH = SCREEN_WIDTH * 0.4;
+const CARD_HEIGHT = CARD_WIDTH;
 
 export const ImageBackgroundContainer = styled.ImageBackground`
   flex: 1;
@@ -20,6 +16,33 @@ export const ImageBackgroundContainer = styled.ImageBackground`
 export const SafeAreaContainer = styled.SafeAreaView`
   background-color: 'rgba(0, 0, 0, 0.2)';
   flex: 1;
+`;
+
+export const Card = styled.View`
+  align-items: center;
+  background-color: 'rgba(62, 130, 209, 0.8)';
+  border-radius: 20px;
+  height: ${CARD_WIDTH}px;
+  justify-content: space-evenly;
+  padding: 10px;
+  width: ${CARD_HEIGHT}px;
+`;
+
+export const CardTitle = styled.Text`
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+`;
+
+export const CardValue = styled.Text`
+  color: #fff;
+  font-size: 24px;
+  text-align: center;
+`;
+
+const DefaultText = styled.Text`
+  color: #fff;
 `;
 
 export const LoadingContainer = styled.View<LoadingContainerProps>`
@@ -57,8 +80,8 @@ export const RefreshText = styled(DefaultText)`
   font-size: 18px;
 `;
 
-export const ErrorContainer = styled.View<ErrorContainerProps>`
-  display: ${props => (props.disable ? 'none' : 'flex')};
+export const ErrorContainer = styled.View`
+  flex: 1;
   align-items: center;
 `;
 
